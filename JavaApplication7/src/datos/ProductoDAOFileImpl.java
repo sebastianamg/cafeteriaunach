@@ -126,7 +126,7 @@ public class ProductoDAOFileImpl implements ProductoDAO{
             this.productos.put(producto.getCódigo(), producto);
             this.save();
             
-            /* hola profe                       
+            /* hola profe             
             */
         }
     }
