@@ -25,8 +25,8 @@ import java.util.logging.Logger;
  * @author alexis
  */
 public class ProductoDAOFileImpl implements ProductoDAO{
-    private File archivo;
-    private HashMap<Integer,ProductoBean> productos;
+    private final File archivo;
+    private final HashMap<Integer,ProductoBean> productos;
 
     public ProductoDAOFileImpl(String nombreArchivo){
         this.archivo = new File(nombreArchivo);
@@ -111,12 +111,21 @@ public class ProductoDAOFileImpl implements ProductoDAO{
 
     @Override
     public boolean removerProducto(ProductoBean producto) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if(this.productos.containsKey(producto.getCódigo())){
+            this.productos.remove(producto.getCódigo());
+            this.save();
+            return true;
+        }
+        return false;
     }
 
     @Override
     public void modificarProducto(ProductoBean producto) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if(this.productos.containsKey(producto.getCódigo())){
+            this.productos.remove(producto.getCódigo());
+            this.productos.put(producto.getCódigo(), producto);
+            this.save();
+        }
     }
 
     @Override
@@ -131,7 +140,10 @@ public class ProductoDAOFileImpl implements ProductoDAO{
 
     @Override
     public ProductoBean obtenerProducto(int código) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if(this.productos.containsKey(código)){
+            return this.productos.get(código);
+        }
+        return null;
     }
 
     @Override
