@@ -21,6 +21,7 @@ import javax.swing.DefaultListModel;
 public class MainWindow extends javax.swing.JFrame {
     
     private ProductoDAO productoDAO;
+    private boolean isEditting;
 
     /**
      * Creates new form MainWindow
@@ -30,6 +31,7 @@ public class MainWindow extends javax.swing.JFrame {
         this.setTitle("Applicator v1.0");
         this.productoDAO = new ProductoDAOFileImpl("productos.dat");
         this.clearTF();
+        this.isEditting = false;
     }
 
     /**
@@ -257,13 +259,16 @@ public class MainWindow extends javax.swing.JFrame {
         producto.setCódigo(Integer.valueOf(TF_codigo.getText()));
         producto.setPrecio(Integer.valueOf(TF_precio.getText()));
         producto.setStock(Integer.valueOf(TF_stock.getText()));
-        
-        if(this.productoDAO.agregarProducto(producto)){
+        if(this.isEditting){    
+            this.productoDAO.modificarProducto(producto);
             L_retroalimentacion.setText("La base de datos ha sido actualizada.");
         }else{
-            L_retroalimentacion.setText("WARNING: ¡La base de datos no ha sido actualizada!");
+            if(this.productoDAO.agregarProducto(producto)){
+                L_retroalimentacion.setText("La base de datos ha sido actualizada.");
+            }else{
+                L_retroalimentacion.setText("WARNING: ¡La base de datos no ha sido actualizada!");
+            }
         }
-        
         this.clearTF();
     }//GEN-LAST:event_B_guardarActionPerformed
 
@@ -276,7 +281,7 @@ public class MainWindow extends javax.swing.JFrame {
                 TF_codigo.setText(String.valueOf(bean.getCódigo())) ;
                 TF_precio.setText(String.valueOf(bean.getPrecio()));
                 TF_stock.setText(String.valueOf(bean.getStock()));
-                
+                this.isEditting = true;
             }
                 
         }
