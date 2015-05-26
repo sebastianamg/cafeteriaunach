@@ -273,8 +273,9 @@ public class MainWindow extends javax.swing.JFrame {
         for (ProductoBean bean : this.productoDAO.listarProductos()) {
             if( nombreElementoSeleccionado == bean.getNombre()){
                 TF_nombre.setText(bean.getNombre());
-                TF_codigo.setText(bean.getCódigo()) ;
-                TF_precio.setText(bean.)
+                TF_codigo.setText(String.valueOf(bean.getCódigo())) ;
+                TF_precio.setText(String.valueOf(bean.getPrecio()));
+                TF_precio.setText(String.valueOf(bean.getStock()));
                 
             }
                 
