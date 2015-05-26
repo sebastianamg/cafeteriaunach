@@ -275,7 +275,7 @@ public class MainWindow extends javax.swing.JFrame {
                 TF_nombre.setText(bean.getNombre());
                 TF_codigo.setText(String.valueOf(bean.getCódigo())) ;
                 TF_precio.setText(String.valueOf(bean.getPrecio()));
-                TF_precio.setText(String.valueOf(bean.getStock()));
+                TF_stock.setText(String.valueOf(bean.getStock()));
                 
             }
                 
