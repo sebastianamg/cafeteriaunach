@@ -5,6 +5,7 @@
  */
 package datos;
 
+import bean.VentaBean;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -13,8 +14,8 @@ import java.util.List;
  * @author alexis
  */
 public interface VentaDAO {
-    boolean agregarVenta(VentaBean producto);
-    boolean anularVenta(VentaBean producto);
+    boolean agregarVenta(VentaBean venta);
+    boolean anularVenta(VentaBean venta);
     List<VentaBean>listarVentas();
     List<VentaBean>listarVentas(Timestamp timestamp);
 

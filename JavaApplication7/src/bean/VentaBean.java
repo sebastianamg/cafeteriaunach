@@ -14,15 +14,16 @@ import java.util.HashMap;
  */
 public class VentaBean {
     
-    private Timestamp Timestamp;
+    private Timestamp timestamp;
+    // <Integer: código producto, Integer: cantidad del producto>
     private HashMap<Integer,Integer> líneasDeDetalle;
 
     public Timestamp getTimestamp() {
-        return Timestamp;
+        return timestamp;
     }
 
     public void setTimestamp(Timestamp Timestamp) {
-        this.Timestamp = Timestamp;
+        this.timestamp = Timestamp;
     }
 
     public HashMap<Integer, Integer> getLíneasDeDetalle() {
