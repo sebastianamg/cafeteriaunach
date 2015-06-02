@@ -12,8 +12,6 @@ import java.awt.Color;
 import java.util.List;
 import javax.swing.DefaultListModel;
 
-
-
 /**
  *
  * @author alexis
