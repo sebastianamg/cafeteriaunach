@@ -393,7 +393,7 @@ public class MainWindow extends javax.swing.JFrame {
         
         List<ProductoBean> tmp = this.productoDAO.listarProductos();
         for (ProductoBean bean : tmp) {
-            dlm.addElement(bean.getNombre());
+            dlm.addElement("Cód. "+bean.getCódigo()+"-"+bean.getNombre()+" → Stock: "+bean.getStock());
        }
         List_productos_disponibles.setModel(dlm);
         List_productos.setModel(dlm);
