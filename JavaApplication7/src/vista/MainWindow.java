@@ -396,30 +396,26 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_TF_stockActionPerformed
 
     private void B_guardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_B_guardarActionPerformed
-        ProductoBean producto = new ProductoBean();
-        producto.setNombre(TF_nombre.getText());
-        producto.setCódigo(Integer.valueOf(TF_codigo.getText()));
-        producto.setPrecio(Integer.valueOf(TF_precio.getText()));
-        producto.setStock(Integer.valueOf(TF_stock.getText()));
-        if(this.isEditting){
-            if(!TF_nombre.getText().isEmpty() && !TF_precio.getText().isEmpty() && !TF_stock.getText().isEmpty()){
+        if(!TF_nombre.getText().trim().isEmpty() && !TF_precio.getText().trim().isEmpty() && !TF_stock.getText().trim().isEmpty()){
+            ProductoBean producto = new ProductoBean();
+            producto.setNombre(TF_nombre.getText());
+            producto.setCódigo(Integer.valueOf(TF_codigo.getText()));
+            producto.setPrecio(Integer.valueOf(TF_precio.getText()));
+            producto.setStock(Integer.valueOf(TF_stock.getText()));
+            if(this.isEditting){
                 this.productoDAO.modificarProducto(producto);
                 L_retroalimentacion.setText("La base de datos ha sido actualizada.");
             }else{
-                L_retroalimentacion.setText("Faltan campos por completar.");
-            }
-        }else{
-            if(!TF_nombre.getText().isEmpty() && !TF_precio.getText().isEmpty() && !TF_stock.getText().isEmpty()){
                 if(this.productoDAO.agregarProducto(producto)){
                     L_retroalimentacion.setText("La base de datos ha sido actualizada.");
                 }else{
                     L_retroalimentacion.setText("¡La base de datos no ha sido actualizada!");
                 }
-            }else{
-                L_retroalimentacion.setText("Faltan campos por completar.");
             }
+            this.clearTF();
+        }else{
+            L_retroalimentacion.setText("Faltan campos por completar.");
         }
-        this.clearTF();
     }//GEN-LAST:event_B_guardarActionPerformed
 
     private void TF_precioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TF_precioActionPerformed
