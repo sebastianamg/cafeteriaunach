@@ -346,17 +346,15 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_B_Agregar_ProductoActionPerformed
 
     private void B_EditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_B_EditarActionPerformed
-        String nombreElementoSeleccionado = (String)List_productos.getSelectedValue();
-
-        for (ProductoBean bean : this.productoDAO.listarProductos()) {
-            if( nombreElementoSeleccionado == bean.getNombre()){
-                TF_nombre.setText(bean.getNombre());
-                TF_codigo.setText(String.valueOf(bean.getCódigo())) ;
-                TF_precio.setText(String.valueOf(bean.getPrecio()));
-                TF_stock.setText(String.valueOf(bean.getStock()));
-                this.isEditting = true;
-            }
-
+        Integer códigoElementoSeleccionado = (Integer)jTable_productos_disponibles.getValueAt(jTable_productos_disponibles.getSelectedRow(), 0);
+        
+        ProductoBean bean = this.productoDAO.obtenerProducto(códigoElementoSeleccionado);
+        if(bean!=null){
+            TF_nombre.setText(bean.getNombre());
+            TF_codigo.setText(String.valueOf(bean.getCódigo())) ;
+            TF_precio.setText(String.valueOf(bean.getPrecio()));
+            TF_stock.setText(String.valueOf(bean.getStock()));
+            this.isEditting = true;
         }
 
     }//GEN-LAST:event_B_EditarActionPerformed
