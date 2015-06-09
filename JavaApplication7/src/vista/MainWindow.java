@@ -86,7 +86,7 @@ public class MainWindow extends javax.swing.JFrame {
 
         jLabel2.setText("Código");
 
-        B_guardar.setText("Guardar");
+        B_guardar.setText("Guardar/Limpiar");
         B_guardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 B_guardarActionPerformed(evt);
@@ -155,11 +155,6 @@ public class MainWindow extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jTable_productos_disponibles.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jTable_productos_disponiblesMouseClicked(evt);
-            }
-        });
         jScrollPane4.setViewportView(jTable_productos_disponibles);
 
         jScrollPane1.setViewportView(jScrollPane4);
@@ -198,7 +193,7 @@ public class MainWindow extends javax.swing.JFrame {
                             .addComponent(TF_nombre, javax.swing.GroupLayout.Alignment.TRAILING))
                         .addGap(18, 18, 18)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 481, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(20, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -289,7 +284,7 @@ public class MainWindow extends javax.swing.JFrame {
                                 .addGap(37, 37, 37)
                                 .addComponent(B_Agregar_Producto))
                             .addComponent(Label_Venta))
-                        .addGap(0, 450, Short.MAX_VALUE)))
+                        .addGap(0, 487, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -371,6 +366,8 @@ public class MainWindow extends javax.swing.JFrame {
         TF_stock.setEditable(true);
         
         this.mostrarProductoSeleccionado();
+        
+        this.isEditting = true;
     }//GEN-LAST:event_B_EditarActionPerformed
 
     private void mostrarProductoSeleccionado(){
@@ -405,13 +402,21 @@ public class MainWindow extends javax.swing.JFrame {
         producto.setPrecio(Integer.valueOf(TF_precio.getText()));
         producto.setStock(Integer.valueOf(TF_stock.getText()));
         if(this.isEditting){
-            this.productoDAO.modificarProducto(producto);
-            L_retroalimentacion.setText("La base de datos ha sido actualizada.");
-        }else{
-            if(this.productoDAO.agregarProducto(producto)){
+            if(!TF_nombre.getText().isEmpty() && !TF_precio.getText().isEmpty() && !TF_stock.getText().isEmpty()){
+                this.productoDAO.modificarProducto(producto);
                 L_retroalimentacion.setText("La base de datos ha sido actualizada.");
             }else{
-                L_retroalimentacion.setText("WARNING: ¡La base de datos no ha sido actualizada!");
+                L_retroalimentacion.setText("Faltan campos por completar.");
+            }
+        }else{
+            if(!TF_nombre.getText().isEmpty() && !TF_precio.getText().isEmpty() && !TF_stock.getText().isEmpty()){
+                if(this.productoDAO.agregarProducto(producto)){
+                    L_retroalimentacion.setText("La base de datos ha sido actualizada.");
+                }else{
+                    L_retroalimentacion.setText("¡La base de datos no ha sido actualizada!");
+                }
+            }else{
+                L_retroalimentacion.setText("Faltan campos por completar.");
             }
         }
         this.clearTF();
@@ -421,15 +426,8 @@ public class MainWindow extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_TF_precioActionPerformed
 
-    private void jTable_productos_disponiblesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable_productos_disponiblesMouseClicked
-        TF_nombre.setEditable(false);
-        TF_codigo.setEditable(false);
-        TF_precio.setEditable(false);
-        TF_stock.setEditable(false);
-        this.mostrarProductoSeleccionado();
-    }//GEN-LAST:event_jTable_productos_disponiblesMouseClicked
-
     private void clearTF(){
+        this.isEditting = false;
         TF_nombre.setEditable(true);
         TF_codigo.setEditable(true);
         TF_precio.setEditable(true);
@@ -448,7 +446,7 @@ public class MainWindow extends javax.swing.JFrame {
             Object[] row = {bean.getCódigo(),bean.getNombre(),bean.getStock(),bean.getPrecio()};
             dtm.addRow(row);
        }
-        //List_productos_disponibles.setModel(dtm);
+        
         jTable_productos_disponibles.setModel(dtm);
     }
     /**
