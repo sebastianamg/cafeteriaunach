@@ -155,6 +155,11 @@ public class MainWindow extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        jTable_productos_disponibles.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable_productos_disponiblesMouseClicked(evt);
+            }
+        });
         jScrollPane4.setViewportView(jTable_productos_disponibles);
 
         jScrollPane1.setViewportView(jScrollPane4);
@@ -170,28 +175,30 @@ public class MainWindow extends javax.swing.JFrame {
                         .addComponent(L_retroalimentacion, javax.swing.GroupLayout.PREFERRED_SIZE, 285, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addContainerGap()
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel1)
                                     .addComponent(jLabel2)
                                     .addComponent(jLabel3)
                                     .addComponent(jLabel4))
-                                .addGap(28, 28, 28)
-                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(TF_stock, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 185, Short.MAX_VALUE)
-                                    .addComponent(TF_precio)
-                                    .addComponent(TF_codigo)
-                                    .addComponent(TF_nombre)))
+                                .addGap(28, 28, 28))
                             .addGroup(jPanel3Layout.createSequentialGroup()
                                 .addComponent(B_guardar)
-                                .addGap(29, 29, 29)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addGap(22, 22, 22)
                                 .addComponent(B_Editar)
-                                .addGap(31, 31, 31)
-                                .addComponent(B_Eliminar)))
+                                .addGap(43, 43, 43)
+                                .addComponent(B_Eliminar))
+                            .addComponent(TF_stock)
+                            .addComponent(TF_precio, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(TF_codigo, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(TF_nombre, javax.swing.GroupLayout.Alignment.TRAILING))
                         .addGap(18, 18, 18)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 481, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(20, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -282,7 +289,7 @@ public class MainWindow extends javax.swing.JFrame {
                                 .addGap(37, 37, 37)
                                 .addComponent(B_Agregar_Producto))
                             .addComponent(Label_Venta))
-                        .addGap(0, 442, Short.MAX_VALUE)))
+                        .addGap(0, 450, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -358,6 +365,15 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_B_Agregar_ProductoActionPerformed
 
     private void B_EditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_B_EditarActionPerformed
+        TF_nombre.setEditable(true);
+        TF_codigo.setEditable(true);
+        TF_precio.setEditable(true);
+        TF_stock.setEditable(true);
+        
+        this.mostrarProductoSeleccionado();
+    }//GEN-LAST:event_B_EditarActionPerformed
+
+    private void mostrarProductoSeleccionado(){
         Integer códigoElementoSeleccionado = (Integer)jTable_productos_disponibles.getValueAt(jTable_productos_disponibles.getSelectedRow(), 0);
         
         ProductoBean bean = this.productoDAO.obtenerProducto(códigoElementoSeleccionado);
@@ -368,9 +384,8 @@ public class MainWindow extends javax.swing.JFrame {
             TF_stock.setText(String.valueOf(bean.getStock()));
             this.isEditting = true;
         }
-
-    }//GEN-LAST:event_B_EditarActionPerformed
-
+    }
+    
     private void TF_nombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TF_nombreActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_TF_nombreActionPerformed
@@ -406,18 +421,31 @@ public class MainWindow extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_TF_precioActionPerformed
 
+    private void jTable_productos_disponiblesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable_productos_disponiblesMouseClicked
+        TF_nombre.setEditable(false);
+        TF_codigo.setEditable(false);
+        TF_precio.setEditable(false);
+        TF_stock.setEditable(false);
+        this.mostrarProductoSeleccionado();
+    }//GEN-LAST:event_jTable_productos_disponiblesMouseClicked
+
     private void clearTF(){
+        TF_nombre.setEditable(true);
+        TF_codigo.setEditable(true);
+        TF_precio.setEditable(true);
+        TF_stock.setEditable(true);
+        
         TF_nombre.setText("");
         TF_codigo.setText(String.valueOf(this.productoDAO.obtenerCódigoMásAltoDeProducto()+1));
         TF_precio.setText("");
         TF_stock.setText("");
         
-        String[] columnNames = {"Código","Nombre","Stock"};
+        String[] columnNames = {"Código","Nombre","Stock","Precio (CLP$)"};
         DefaultTableModel dtm = new DefaultTableModel(columnNames, 0);
         
         List<ProductoBean> tmp = this.productoDAO.listarProductos();
         for (ProductoBean bean : tmp) {
-            Object[] row = {bean.getCódigo(),bean.getNombre(),bean.getStock()};
+            Object[] row = {bean.getCódigo(),bean.getNombre(),bean.getStock(),bean.getPrecio()};
             dtm.addRow(row);
        }
         //List_productos_disponibles.setModel(dtm);
